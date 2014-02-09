@@ -42,6 +42,7 @@
     NSArray *_keyLabels;
     NSFont *_keyLabelFont;
     NSFont *_candidateFont;
+    NSArray *_screenFrames;
 }
 
 - (void)reloadData;

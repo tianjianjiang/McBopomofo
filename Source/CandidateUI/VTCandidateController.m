@@ -36,6 +36,8 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSApplicationDidChangeScreenParametersNotification object:nil];
+    [_screenFrames release];
     [_keyLabels release];
     [_keyLabelFont release];
     [_candidateFont release];
@@ -50,6 +52,12 @@
         _keyLabels = [[NSArray arrayWithObjects:@"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", nil] retain];
         _keyLabelFont = [[NSFont systemFontOfSize:14.0] retain];
         _candidateFont = [[NSFont systemFontOfSize:18.0] retain];
+        
+        // populate screen frames using current screen configuration
+        [self updateScreenFrames:nil];
+
+        // observe screen-change notifications
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateScreenFrames:) name:NSApplicationDidChangeScreenParametersNotification object:nil];
     }
     
     return self;
@@ -85,10 +93,9 @@
     CGFloat adjustedHeight = height;
     
     // first, locate the screen the point is in
-    NSRect screenFrame = [[NSScreen mainScreen] visibleFrame];
-    
-    for (NSScreen *screen in [NSScreen screens]) {
-        NSRect frame = [screen visibleFrame];
+    NSRect screenFrame = NSMakeRect(0, 0, 10240, 10240);
+    for (NSValue *frameValue in _screenFrames) {
+        NSRect frame = [frameValue rectValue];
         if (topLeftPoint.x >= NSMinX(frame) && topLeftPoint.x <= NSMaxX(frame)) {
             screenFrame = frame;
             break;
@@ -163,5 +170,19 @@
 
 - (void)setSelectedCandidateIndex:(NSUInteger)newIndex
 {
+}
+
+- (void)updateScreenFrames:(NSNotification *)notification
+{
+    NSMutableArray *frames = [NSMutableArray array];
+    
+    NSArray *screens = [NSScreen screens];
+    for (NSScreen *screen in screens) {
+        NSRect frame = [screen frame];
+        [frames addObject:[NSValue valueWithRect:frame]];
+    }
+    
+    [_screenFrames autorelease];
+    _screenFrames = [frames retain];
 }
 @end
