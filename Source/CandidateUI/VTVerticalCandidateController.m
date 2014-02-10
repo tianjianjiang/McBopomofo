@@ -396,6 +396,6 @@ static const CGFloat kCandidateTextLeftMargin = 8.0;
     
     [_keyLabelStripView setFrame:NSMakeRect(0.0, 0.0, stripWidth, windowHeight)];
     [_scrollView setFrame:NSMakeRect(stripWidth + 1.0, 0.0, tableViewStartWidth, windowHeight)];
-    [[self window] setFrame:frameRect display:YES];
+    [[self window] setFrame:frameRect display:NO];
 }
 @end
