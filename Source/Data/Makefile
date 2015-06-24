@@ -16,12 +16,12 @@ PhraseFreq.txt: bin/buildFreq.py phrase.occ exclusion.txt
 	bin/buildFreq.py
 
 clean:
-	rm -f data.txt data-plain-bpmf.txt
+	rm -f data.txt data-plain-bpmf.txt phrase.list
 
 # FOR INTERNAL USE
 _install: tidy sort check all
 	cp -a data.txt data-plain-bpmf.txt $(HOME)/Library/Input\ Methods/McBopomofo.app/Contents/Resources/
-	killall -HUP McBopomofo
+	@pgrep McBopomofo > /dev/null && killall -HUP McBopomofo || echo McBopomofo is not running
 
 sort: 
 	@env LANG=C sort -k1 phrase.occ | uniq | grep -v '^$$' > tmp
@@ -58,10 +58,16 @@ phrase.list: BPMFBase.txt BPMFMappings.txt
 	awk '{print $$1}'         BPMFMappings.txt >> tmp
 	env LANG=C sort -u tmp | uniq > phrase.list
 _myinstall:
-	cd ../.. && xcodebuild -target McBopomofo -configuration Release
-	rsync -avx --delete ../../build/Release/McBopomofo.app/ ~/Library/Input\ Methods/McBopomofo.app/
-	killall -HUP McBopomofo
+	cd ../.. && \
+         xcodebuild -target McBopomofo -configuration Release && \
+	 rsync -avx --delete build/Release/McBopomofo.app/ \
+            ~/Library/Input\ Methods/McBopomofo.app/ && \
+	 pgrep McBopomofo && killall -HUP McBopomofo || echo -n
+_myclean:
+	cd ../.. && xcodebuild clean
 _mydebuginstall:
-	cd ../.. && xcodebuild -target McBopomofo -configuration Debug
-	rsync -avx --delete ../../build/Debug/McBopomofo.app/ ~/Library/Input\ Methods/McBopomofo.app/
-	killall -HUP McBopomofo || echo -n
+	cd ../.. && \
+         xcodebuild -target McBopomofo -configuration Debug && \
+	 rsync -avx --delete build/Debug/McBopomofo.app/ \
+            ~/Library/Input\ Methods/McBopomofo.app/ && \
+	 pgrep McBopomofo && killall -HUP McBopomofo || echo -n

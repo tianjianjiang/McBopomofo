@@ -17,11 +17,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.9.6.7</string>
+	<string>0.9.6.11</string>
 	<key>CFBundleSignature</key>
 	<string>BPMF</string>
 	<key>CFBundleVersion</key>
-	<string>540</string>
+	<string>667</string>
 	<key>ComponentInputModeDict</key>
 	<dict>
 		<key>tsInputModeListKey</key>
@@ -94,9 +94,9 @@
 	<key>TISIntendedLanguage</key>
 	<string>zh-Hant</string>
 	<key>UpdateInfoEndpoint</key>
-	<string>http://mcbopomofo.openvanilla.org/updates/Info.plist</string>
+	<string>https://mcbopomofo.openvanilla.org/updates/Info.plist</string>
 	<key>UpdateInfoSite</key>
-	<string>https://github.com/mjhsieh/McBopomofo/downloads</string>
+	<string>https://mcbopomofo.openvanilla.org/</string>
 	<key>tsInputMethodCharacterRepertoireKey</key>
 	<array>
 		<string>Hant</string>

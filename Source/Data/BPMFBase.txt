@@ -175,6 +175,7 @@
 吧 ㄅㄚ ba 18 big5
 仈 ㄅㄚ ba 18 big5
 朳 ㄅㄚ ba 18 big5
+峇 ㄅㄚ ba 18 big5
 把 ㄅㄚˇ ba3 183 big5
 靶 ㄅㄚˇ ba3 183 big5
 鈀 ㄅㄚˇ ba3 183 big5
@@ -2125,6 +2126,8 @@
 籈 ㄓㄣ zhen 5p big5
 鷏 ㄓㄣ zhen 5p big5
 堻 ㄓㄣ zhen 5p big5
+𡻈 ㄓㄣ zhen 5p big5
+錱 ㄓㄣ zhen 5p cns
 診 ㄓㄣˇ zhen3 5p3 big5
 枕 ㄓㄣˇ zhen3 5p3 big5
 疹 ㄓㄣˇ zhen3 5p3 big5
@@ -2567,6 +2570,7 @@
 徾 ㄇㄟˊ mei2 ao6 big5
 攗 ㄇㄟˊ mei2 ao6 big5
 悶 ㄇㄣ men ap big5
+燜 ㄇㄣ men ap big5
 暪 ㄇㄣˇ men3 ap3 big5
 悶 ㄇㄣˋ men4 ap4 big5
 燜 ㄇㄣˋ men4 ap4 big5
@@ -5753,6 +5757,7 @@
 鷞 ㄕㄨㄤ shuang gj; big5
 孇 ㄕㄨㄤ shuang gj; big5
 礵 ㄕㄨㄤ shuang gj; big5
+双 ㄕㄨㄤ shuang gj; big5e
 爽 ㄕㄨㄤˇ shuang3 gj;3 big5
 塽 ㄕㄨㄤˇ shuang3 gj;3 big5
 樉 ㄕㄨㄤˇ shuang3 gj;3 big5
@@ -5760,6 +5765,7 @@
 慡 ㄕㄨㄤˇ shuang3 gj;3 big5
 縔 ㄕㄨㄤˇ shuang3 gj;3 big5
 灀 ㄕㄨㄤˋ shuang4 gj;4 big5
+双 ㄕㄨㄤˋ shuang4 gj;4 big5e
 說 ㄕㄨㄛ shuo gji big5
 朔 ㄕㄨㄛˋ shuo4 gji4 big5
 碩 ㄕㄨㄛˋ shuo4 gji4 big5
@@ -6784,7 +6790,6 @@
 耀 ㄩㄝˋ yue4 m,4 big5
 鑰 ㄩㄝˋ yue4 m,4 big5
 曜 ㄩㄝˋ yue4 m,4 big5
-藥 ㄩㄝˋ yue4 m,4 big5
 鉞 ㄩㄝˋ yue4 m,4 big5
 說 ㄩㄝˋ yue4 m,4 big5
 刖 ㄩㄝˋ yue4 m,4 big5
@@ -9154,15 +9159,16 @@
 釢 ㄋㄞˇ nai3 s93 big5
 艿 ㄋㄞˇ nai3 s93 big5
 尕 ㄋㄞˇ nai3 s93 big5
-耐 ㄋㄞˋ nai4 s94 big5
-奈 ㄋㄞˋ nai4 s94 big5
-褦 ㄋㄞˋ nai4 s94 big5
-鼐 ㄋㄞˋ nai4 s94 big5
-柰 ㄋㄞˋ nai4 s94 big5
 倷 ㄋㄞˋ nai4 s94 big5
-螚 ㄋㄞˋ nai4 s94 big5
+奈 ㄋㄞˋ nai4 s94 big5
+柰 ㄋㄞˋ nai4 s94 big5
 渿 ㄋㄞˋ nai4 s94 big5
+耐 ㄋㄞˋ nai4 s94 big5
+萘 ㄋㄞˋ nai4 s94 big5e
+螚 ㄋㄞˋ nai4 s94 big5
+褦 ㄋㄞˋ nai4 s94 big5
 錼 ㄋㄞˋ nai4 s94 big5
+鼐 ㄋㄞˋ nai4 s94 big5
 孻 ㄋㄞˊ nai2 s96 big5
 摨 ㄋㄞˊ nai2 s96 big5
 囔 ㄋㄤ nang s; big5
@@ -9599,6 +9605,7 @@
 鉹 ㄔˇ chi3 t3 big5
 伬 ㄔˇ chi3 t3 big5
 鶒 ㄔˇ chi3 t3 big5
+豉 ㄔˇ chi3 t3 big5
 赤 ㄔˋ chi4 t4 big5
 翅 ㄔˋ chi4 t4 big5
 斥 ㄔˋ chi4 t4 big5
@@ -9737,6 +9744,7 @@
 萇 ㄔㄤˊ chang2 t;6 big5
 鋿 ㄔㄤˊ chang2 t;6 big5
 粻 ㄔㄤˊ chang2 t;6 big5
+躼 ㄔㄤˊ chang2 t;6 cns
 出 ㄔㄨ chu tj big5
 初 ㄔㄨ chu tj big5
 齣 ㄔㄨ chu tj big5
@@ -11956,15 +11964,16 @@
 遢 ㄊㄚ˙ ta5 w87 big5
 胎 ㄊㄞ tai w9 big5
 苔 ㄊㄞ tai w9 big5
+傣 ㄊㄞˋ tai4 w94 big5
+呔 ㄊㄞˋ tai4 w94 big5
 太 ㄊㄞˋ tai4 w94 big5
 態 ㄊㄞˋ tai4 w94 big5
-泰 ㄊㄞˋ tai4 w94 big5
 汰 ㄊㄞˋ tai4 w94 big5
-鈦 ㄊㄞˋ tai4 w94 big5
-燤 ㄊㄞˋ tai4 w94 big5
+泰 ㄊㄞˋ tai4 w94 big5
 溙 ㄊㄞˋ tai4 w94 big5
-呔 ㄊㄞˋ tai4 w94 big5
-傣 ㄊㄞˋ tai4 w94 big5
+燤 ㄊㄞˋ tai4 w94 big5
+肽 ㄊㄞˋ tai4 w94 big5-hkscs
+鈦 ㄊㄞˋ tai4 w94 big5
 台 ㄊㄞˊ tai2 w96 big5
 臺 ㄊㄞˊ tai2 w96 big5
 抬 ㄊㄞˊ tai2 w96 big5
@@ -13080,6 +13089,7 @@
 蕶 ㄌㄧㄥˊ ling2 xu/6 big5
 爧 ㄌㄧㄥˊ ling2 xu/6 big5
 堎 ㄌㄧㄥˊ ling2 xu/6 big5
+〇 ㄌㄧㄥˊ ling2 xu/6 big5
 臉 ㄌㄧㄢˇ lian3 xu03 big5
 鄻 ㄌㄧㄢˇ lian3 xu03 big5
 膦 ㄌㄧㄢˇ lian3 xu03 big5

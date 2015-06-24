@@ -234,6 +234,11 @@ public:
     }
     #endif //DEBUG
 
+    #if DEBUG
+    NSMenuItem *updateCheckItem = [[[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Check for Updates…", @"") action:@selector(checkForUpdate:) keyEquivalent:@""] autorelease];
+    [menu addItem:updateCheckItem];
+    #endif
+
     NSMenuItem *aboutMenuItem = [[[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"About McBopomofo…", @"") action:@selector(showAbout:) keyEquivalent:@""] autorelease];
     [menu addItem:aboutMenuItem];
 
@@ -245,6 +250,13 @@ public:
 - (void)activateServer:(id)client
 {
     [[NSUserDefaults standardUserDefaults] synchronize];
+
+    // Override the keyboard layout. Use US if not set.
+    NSString *basisKeyboardLayoutID = [[NSUserDefaults standardUserDefaults] stringForKey:kBasisKeyboardLayoutPreferenceKey];
+    if (!basisKeyboardLayoutID) {
+        basisKeyboardLayoutID = @"com.apple.keylayout.US";
+    }
+    [client overrideKeyboardWithKeyboardNamed:basisKeyboardLayoutID];
 
     // reset the state
     _currentDeferredClient = nil;
@@ -323,35 +335,46 @@ public:
 
 - (void)setValue:(id)value forTag:(long)tag client:(id)sender
 {
+    NSString *newInputMode;
+    Formosa::Gramambular::FastLM *newLanguageModel;
+
     if ([value isKindOfClass:[NSString class]] && [value isEqual:kPlainBopomofoModeIdentifier]) {
-        _inputMode = kPlainBopomofoModeIdentifier;
-        _languageModel = &gLanguageModelPlainBopomofo;
+        newInputMode = kPlainBopomofoModeIdentifier;
+        newLanguageModel = &gLanguageModelPlainBopomofo;
     }
     else {
-        _inputMode = kBopomofoModeIdentifier;
-        _languageModel = &gLanguageModel;
+        newInputMode = kBopomofoModeIdentifier;
+        newLanguageModel = &gLanguageModel;
     }
 
-    NSString *basisKeyboardLayoutID = [[NSUserDefaults standardUserDefaults] stringForKey:kBasisKeyboardLayoutPreferenceKey];
-    if (!basisKeyboardLayoutID) {
-        basisKeyboardLayoutID = @"com.apple.keylayout.US";
-    }
+    // Only apply the changes if the value is changed
+    if (![_inputMode isEqualToString:newInputMode]) {
+        [[NSUserDefaults standardUserDefaults] synchronize];
 
-    [sender overrideKeyboardWithKeyboardNamed:basisKeyboardLayoutID];
+        // Remember to override the keyboard layout again -- treat this as an activate eventy
+        NSString *basisKeyboardLayoutID = [[NSUserDefaults standardUserDefaults] stringForKey:kBasisKeyboardLayoutPreferenceKey];
+        if (!basisKeyboardLayoutID) {
+            basisKeyboardLayoutID = @"com.apple.keylayout.US";
+        }
+        [sender overrideKeyboardWithKeyboardNamed:basisKeyboardLayoutID];
 
-    if (!_bpmfReadingBuffer->isEmpty()) {
-        _bpmfReadingBuffer->clear();
-        [self updateClientComposingBuffer:sender];
-    }
+        _inputMode = newInputMode;
+        _languageModel = newLanguageModel;
 
-    if ([_composingBuffer length] > 0) {
-        [self commitComposition:sender];
-    }
+        if (!_bpmfReadingBuffer->isEmpty()) {
+            _bpmfReadingBuffer->clear();
+            [self updateClientComposingBuffer:sender];
+        }
 
-    if (_builder) {
-        delete _builder;
-        _builder = new BlockReadingBuilder(_languageModel);
-        _builder->setJoinSeparator("-");
+        if ([_composingBuffer length] > 0) {
+            [self commitComposition:sender];
+        }
+
+        if (_builder) {
+            delete _builder;
+            _builder = new BlockReadingBuilder(_languageModel);
+            _builder->setJoinSeparator("-");
+        }
     }
 }
 
@@ -1105,24 +1128,30 @@ public:
 - (BOOL)handleEvent:(NSEvent *)event client:(id)client
 {
     if ([event type] == NSFlagsChanged) {
-        // function key pressed
-        BOOL includeShift = [[NSUserDefaults standardUserDefaults] boolForKey:kFunctionKeyKeyboardLayoutOverrideIncludeShiftKey];
-        if (([event modifierFlags] & ~NSShiftKeyMask) || (([event modifierFlags] & NSShiftKeyMask) && includeShift)) {
-            NSString *functionKeyKeyboardLayoutID = [[NSUserDefaults standardUserDefaults] stringForKey:kFunctionKeyKeyboardLayoutPreferenceKey];
-            if (!functionKeyKeyboardLayoutID) {
-                functionKeyKeyboardLayoutID = @"com.apple.keylayout.US";
-            }
-
-            [client overrideKeyboardWithKeyboardNamed:functionKeyKeyboardLayoutID];
-            return NO;
+        NSString *functionKeyKeyboardLayoutID = [[NSUserDefaults standardUserDefaults] stringForKey:kFunctionKeyKeyboardLayoutPreferenceKey];
+        if (!functionKeyKeyboardLayoutID) {
+            functionKeyKeyboardLayoutID = @"com.apple.keylayout.US";
         }
 
-        // reset when function key is released
         NSString *basisKeyboardLayoutID = [[NSUserDefaults standardUserDefaults] stringForKey:kBasisKeyboardLayoutPreferenceKey];
         if (!basisKeyboardLayoutID) {
             basisKeyboardLayoutID = @"com.apple.keylayout.US";
         }
 
+        // If no override is needed, just return NO.
+        if ([functionKeyKeyboardLayoutID isEqualToString:basisKeyboardLayoutID]) {
+            return NO;
+        }
+
+        // Function key pressed.
+        BOOL includeShift = [[NSUserDefaults standardUserDefaults] boolForKey:kFunctionKeyKeyboardLayoutOverrideIncludeShiftKey];
+        if (([event modifierFlags] & ~NSShiftKeyMask) || (([event modifierFlags] & NSShiftKeyMask) && includeShift)) {
+            // Override the keyboard layout and let the OS do its thing
+            [client overrideKeyboardWithKeyboardNamed:functionKeyKeyboardLayoutID];
+            return NO;
+        }
+
+        // Revert back to the basis layout when the function key is released
         [client overrideKeyboardWithKeyboardNamed:basisKeyboardLayoutID];
         return NO;
     }
@@ -1360,6 +1389,11 @@ public:
     [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
 }
 
+- (void)checkForUpdate:(id)sender
+{
+    [(AppDelegate *)[[NSApplication sharedApplication] delegate] checkForUpdateForced:YES];
+}
+
 - (void)showAbout:(id)sender
 {
     [[NSApplication sharedApplication] orderFrontStandardAboutPanel:sender];
@@ -1497,7 +1531,7 @@ void LTLoadLanguageModel()
         }
 
         NSString *errorStr = nil;
-        NSPropertyListFormat format = 0;
+        NSPropertyListFormat format;
         id plist = [NSPropertyListSerialization propertyListFromData:data mutabilityOption:NSPropertyListImmutable format:&format errorDescription:&errorStr];
         if (plist && [plist isKindOfClass:[NSDictionary class]]) {
             [gCandidateLearningDictionary setDictionary:(NSDictionary *)plist];
